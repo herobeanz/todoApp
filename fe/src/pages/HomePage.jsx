@@ -5,9 +5,28 @@ import TaskList from '@/components/TaskList';
 import TaskListPagination from '@/components/TaskListPagination';
 import DateTimeFilter from '@/components/DateTimeFilter';
 import Footer from '@/components/Footer';
-import React from 'react'
+import { toast } from 'sonner';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
 const HomePage = () => {
+  const [taskBuffer, setTaskBuffer] = useState([]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get('http://localhost:5001/api/tasks');
+      setTaskBuffer(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      toast.error('Error fetching tasks');
+    }
+  };
+
   return (
     
 <div className="min-h-screen w-full bg-[#fff9f5] relative">
@@ -24,50 +43,27 @@ const HomePage = () => {
 
       {/* Your Content/Components */}
       <div className="container relative z-10 pt-8 mx-auto">
-        <div className="w-full max-w-2xl p-6 mx-auto space-y-6">
+        <div className="p-6 mx-auto space-y-6 w-full max-w-2xl">
           {/* Đầu Trang */}
           <Header />
 
           {/* Tạo Nhiệm Vụ */}
-          <AddTask 
-          // handleNewTaskAdded={handleTaskChanged} 
-          />
+          <AddTask />
 
           {/* Thống Kê và Bộ lọc */}
-          <StatsAndFilters
-            // filter={filter}
-            // setFilter={setFilter}
-            // activeTasksCount={activeTaskCount}
-            // completedTasksCount={completeTaskCount}
-          />
+          <StatsAndFilters/>
 
           {/* Danh Sách Nhiệm Vụ */}
-          <TaskList
-            // filteredTasks={visibleTasks}
-            // filter={filter}
-            // handleTaskChanged={handleTaskChanged}
-          />
+          <TaskList filteredTasks={taskBuffer}/>
 
           {/* Phân Trang và Lọc Theo Date */}
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <TaskListPagination
-              // handleNext={handleNext}
-              // handlePrev={handlePrev}
-              // handlePageChange={handlePageChange}
-              // page={page}
-              // totalPages={totalPages}
-            />
-            <DateTimeFilter
-              // dateQuery={dateQuery}
-              // setDateQuery={setDateQuery}
-            />
+          <div className="flex flex-col gap-6 justify-between items-center sm:flex-row">
+            <TaskListPagination/>
+            <DateTimeFilter/>
           </div>
 
           {/* Chân Trang */}
-          <Footer
-            // activeTasksCount={activeTaskCount}
-            // completedTasksCount={completeTaskCount}
-          />
+          <Footer/>
         </div>
       </div>
     </div>

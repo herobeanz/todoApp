@@ -1,9 +1,50 @@
 import React from 'react'
+import { FilterType } from '@/lib/data'
+import { Button } from './ui/button'
+import { Filter } from 'lucide-react'
+import { Badge } from './ui/badge'
 
-const StatsAndFilters = () => {
+const StatsAndFilters = ({
+  completedTasksCount = 0,
+  activeTasksCount = 0,
+  filter = "all",
+  setFilter,
+}) => {
   return (
-    <div>StatsAndFilters</div>
-  )
-}
+    <div className="flex flex-col gap-4 justify-between items-start sm:flex-row sm:items-center">
+      {/* phần thống kê */}
+      <div className="flex gap-3">
+        <Badge
+          variant="secondary"
+          className="bg-white/50 text-accent-foreground border-info/20"
+        >
+          {activeTasksCount} {FilterType.active}
+        </Badge>
+        <Badge
+          variant="secondary"
+          className="bg-white/50 text-success border-success/20"
+        >
+          {completedTasksCount} {FilterType.completed}
+        </Badge>
+      </div>
+
+      {/* phần filter */}
+      <div className="flex flex-col gap-2 sm:flex-row">
+        {Object.keys(FilterType).map((type) => (
+          <Button
+            key={type}
+            variant={filter === type ? "gradient" : "ghost"}
+            size="sm"
+            className="capitalize"
+            onClick={() => setFilter(type)}
+          >
+            <Filter className="size-4" />
+            {FilterType[type]}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default StatsAndFilters
