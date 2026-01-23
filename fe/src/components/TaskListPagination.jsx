@@ -5,5 +5,4 @@ const TaskListPagination = () => {
     <div>TaskListPagination</div>
   )
 }
-
 export default TaskListPagination

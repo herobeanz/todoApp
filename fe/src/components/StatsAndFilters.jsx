@@ -8,11 +8,11 @@ const StatsAndFilters = ({
   completedTasksCount = 0,
   activeTasksCount = 0,
   filter = "all",
-  setFilter,
+  setFilter
 }) => {
   return (
     <div className="flex flex-col gap-4 justify-between items-start sm:flex-row sm:items-center">
-      {/* phần thống kê */}
+      {/* Stats section */}
       <div className="flex gap-3">
         <Badge
           variant="secondary"
@@ -28,7 +28,7 @@ const StatsAndFilters = ({
         </Badge>
       </div>
 
-      {/* phần filter */}
+      {/* Filter section */}
       <div className="flex flex-col gap-2 sm:flex-row">
         {Object.keys(FilterType).map((type) => (
           <Button
